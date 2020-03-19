@@ -359,18 +359,18 @@ class DMCNN():
 
                 pred_labels = []
                 for batch in get_batch(dev,constant.a_batch_size,False):
-                    golden_event_types,feed_dict = get_argument_feeddict(self,batch,False,"argument")
+                    pred_event_types,feed_dict = get_argument_feeddict(self,batch,False,"argument")
                     pred_label = sess.run(self.pred_label,feed_dict=feed_dict)
-                    pred_labels.extend(list(zip(list(golden_event_types),list(pred_label))))
+                    pred_labels.extend(list(zip(list(pred_event_types),list(pred_label))))
                 golds = list(zip(list(dev[1]),list(dev[2])))
                 dev_p,dev_r,dev_f = f_score(pred_labels,golds)
                 print("dev_Precision: {} dev_Recall:{} dev_F1:{}".format(str(dev_p),str(dev_r),str(dev_f)))
 
                 pred_labels = []
                 for batch in get_batch(test,constant.a_batch_size,False):
-                    golden_event_types,feed_dict = get_argument_feeddict(self,batch,False,"argument")
+                    pred_event_types,feed_dict = get_argument_feeddict(self,batch,False,"argument")
                     pred_label = sess.run(self.pred_label,feed_dict=feed_dict)
-                    pred_labels.extend(list(zip(list(golden_event_types),list(pred_label))))
+                    pred_labels.extend(list(zip(list(pred_event_types),list(pred_label))))
                 golds = list(zip(list(test[1]),list(test[2])))
                 test_p, test_r, test_f = f_score(pred_labels, golds)
                 print("test_Precision: {} test_Recall:{} test_F1:{}\n".format(str(test_p), str(test_r), str(test_f)))

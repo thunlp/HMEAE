@@ -71,7 +71,7 @@ def get_argument_feeddict(model,batch,is_train=True,stage='trigger'):
         else:
             sents,event_types,roles,maskl,maskm,maskr,\
             trigger_lexical,argument_lexical,trigger_maskl,trigger_maskr,trigger_posis,argument_posis,pred_event_types = batch
-            return event_types,{model.sents:sents,model.trigger_posis:trigger_posis,model.argument_posis:argument_posis,
+            return pred_event_types,{model.sents:sents,model.trigger_posis:trigger_posis,model.argument_posis:argument_posis,
                     model.maskls:maskl,model.maskms:maskm,model.maskrs:maskr,
                     model.trigger_lexical:trigger_lexical,model.argument_lexical:argument_lexical,
                     model._labels:roles,model.is_train:is_train,model.event_types:pred_event_types}
