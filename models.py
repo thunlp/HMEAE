@@ -3,13 +3,14 @@ import constant
 from func import get_batch,get_trigger_feeddict,f_score,get_argument_feeddict
 import numpy as np
 class DMCNN():
-    def __init__(self,t_data,a_data,maxlen,max_argument_len,wordemb,stage="trigger"):
+    def __init__(self,t_data,a_data,maxlen,max_argument_len,wordemb,stage="trigger",classify='single'):
         self.t_train,self.t_dev,self.t_test = t_data
         self.a_train,self.a_dev,self.a_test = a_data
         self.maxlen = maxlen
         self.wordemb = wordemb
         self.stage = stage
         self.max_argument_len = max_argument_len
+        self.classify = classify
         self.build_graph()
     
     def build_graph(self):
@@ -363,7 +364,7 @@ class DMCNN():
                     pred_label = sess.run(self.pred_label,feed_dict=feed_dict)
                     pred_labels.extend(list(zip(list(pred_event_types),list(pred_label))))
                 golds = list(zip(list(dev[1]),list(dev[2])))
-                dev_p,dev_r,dev_f = f_score(pred_labels,golds)
+                dev_p,dev_r,dev_f = f_score(pred_labels,golds,self.classify)
                 print("dev_Precision: {} dev_Recall:{} dev_F1:{}".format(str(dev_p),str(dev_r),str(dev_f)))
 
                 pred_labels = []
@@ -372,7 +373,7 @@ class DMCNN():
                     pred_label = sess.run(self.pred_label,feed_dict=feed_dict)
                     pred_labels.extend(list(zip(list(pred_event_types),list(pred_label))))
                 golds = list(zip(list(test[1]),list(test[2])))
-                test_p, test_r, test_f = f_score(pred_labels, golds)
+                test_p, test_r, test_f = f_score(pred_labels, golds,self.classify)
                 print("test_Precision: {} test_Recall:{} test_F1:{}\n".format(str(test_p), str(test_r), str(test_f)))
 
                 if dev_f>devbest:

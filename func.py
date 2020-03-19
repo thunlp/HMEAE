@@ -8,12 +8,15 @@ def is_NA(x):
     else:
         return x==0
 
-def f_score(predict,golden,mode='f'):
+def f_score(predict,golden,classify='single',mode='f'):
     assert len(predict)==len(golden)
     TP = 0
     FP = 0
     FN = 0
     TN = 0
+    if isinstance(predict[0],tuple) and classify=='single':
+        predict = [e[1] for e in predict]
+        golden = [e[1] for e in golden]
     for i in range(len(predict)):
         if predict[i]==golden[i] and not is_NA(predict[i]):
             TP+=1
