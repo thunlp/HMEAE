@@ -2,6 +2,12 @@ import numpy as np
 import random
 import tensorflow as tf
 
+def is_NA(x):
+    if isinstance(x,tuple):
+        return 0 in x
+    else:
+        return x==0
+
 def f_score(predict,golden,mode='f'):
     assert len(predict)==len(golden)
     TP = 0
@@ -9,12 +15,12 @@ def f_score(predict,golden,mode='f'):
     FN = 0
     TN = 0
     for i in range(len(predict)):
-        if predict[i]==golden[i] and predict[i] != 0:
+        if predict[i]==golden[i] and not is_NA(predict[i]):
             TP+=1
         elif predict[i]!=golden[i]:
-            if predict[i]==0:
+            if is_NA(predict[i]):
                 FN+=1
-            elif golden[i]==0:
+            elif is_NA(golden[i]):
                 FP+=1
             else:
                 FN+=1
@@ -50,15 +56,24 @@ def get_trigger_feeddict(model,batch,is_train=True):
             model._labels:event_types,model.lexical:lexical,model.is_train:is_train}
 
 def get_argument_feeddict(model,batch,is_train=True,stage='trigger'):
-    sents,event_types,roles,maskl,maskm,maskr,\
-    trigger_lexical,argument_lexical,trigger_maskl,trigger_maskr,trigger_posis,argument_posis = batch
-
     if stage=='trigger':
+        sents,event_types,roles,maskl,maskm,maskr,\
+        trigger_lexical,argument_lexical,trigger_maskl,trigger_maskr,trigger_posis,argument_posis = batch
         return get_trigger_feeddict(model,(trigger_posis,sents,trigger_maskl,trigger_maskr,event_types,trigger_lexical),False)
     elif stage=="argument":
-        return {model.sents:sents,model.trigger_posis:trigger_posis,model.argument_posis:argument_posis,
-                model.maskls:maskl,model.maskms:maskm,model.maskrs:maskr,
-                model.trigger_lexical:trigger_lexical,model.argument_lexical:argument_lexical,
-                model._labels:roles,model.is_train:is_train,model.event_types:event_types}
+        if is_train:
+            sents,event_types,roles,maskl,maskm,maskr,\
+            trigger_lexical,argument_lexical,trigger_maskl,trigger_maskr,trigger_posis,argument_posis = batch
+            return {model.sents:sents,model.trigger_posis:trigger_posis,model.argument_posis:argument_posis,
+                    model.maskls:maskl,model.maskms:maskm,model.maskrs:maskr,
+                    model.trigger_lexical:trigger_lexical,model.argument_lexical:argument_lexical,
+                    model._labels:roles,model.is_train:is_train,model.event_types:event_types}
+        else:
+            sents,event_types,roles,maskl,maskm,maskr,\
+            trigger_lexical,argument_lexical,trigger_maskl,trigger_maskr,trigger_posis,argument_posis,pred_event_types = batch
+            return event_types,{model.sents:sents,model.trigger_posis:trigger_posis,model.argument_posis:argument_posis,
+                    model.maskls:maskl,model.maskms:maskm,model.maskrs:maskr,
+                    model.trigger_lexical:trigger_lexical,model.argument_lexical:argument_lexical,
+                    model._labels:roles,model.is_train:is_train,model.event_types:pred_event_types}
     else:
         raise ValueError("stage could only be trigger or argument")

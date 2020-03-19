@@ -243,7 +243,7 @@ class Extractor():
             path = constant.ACE_FILES+'/'+dir+'/timex2norm'
             files =self.source_files[dir]
             for file in files:
-                event_in_this_file = [(e['start'],e['end']) for e in self.Events if e['file'][:-7]==file[:-3] and e['dir']==dir]
+                event_in_this_file = [(e['start'],e['end']) for e in self.Events if e['file']==file[:-4] and e['dir']==dir]
                 Entities = [(e['start'],e['end']) for e in self.Entities if e['dir']==dir and e['file'][:-7]==file[:-3]]
                 with open(path+'/'+file,'r') as f:
                     text = f.read()

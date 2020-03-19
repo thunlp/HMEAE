@@ -1,14 +1,14 @@
 
-ACE_FILES = './English'
-ACE_DUMP = './data/ACE05/'
-GloVe_file = './glove/glove.6B.100d.txt'
+ACE_FILES = '../GAT/English'
+ACE_DUMP = '../GAT/data/ACE05/'
+GloVe_file = '../GAT/glove/glove.6B.100d.txt'
 
 
 EVENT_TYPE_TO_ID = {'None': 0, 'Be-Born': 1, 'Die': 2, 'Marry': 3, 'Divorce': 4, 'Injure': 5, 'Transfer-Ownership': 6, 'Transfer-Money': 7, 'Transport': 8, 'Start-Org': 9, 'End-Org': 10, 'Declare-Bankruptcy': 11, 'Merge-Org': 12, 'Attack': 13, 'Demonstrate': 14, 'Meet': 15, 'Phone-Write': 16, 'Start-Position': 17, 'End-Position': 18, 'Nominate': 19, 'Elect': 20, 'Arrest-Jail': 21, 'Release-Parole': 22, 'Charge-Indict': 23, 'Trial-Hearing': 24, 'Sue': 25, 'Convict': 26, 'Sentence': 27, 'Fine': 28, 'Execute': 29, 'Extradite': 30, 'Acquit': 31, 'Pardon': 32, 'Appeal': 33}
 
 ROLE_TO_ID = {'None': 0, 'Person': 1, 'Place': 2, 'Buyer': 3, 'Seller': 4, 'Beneficiary': 5, 'Price': 6, 'Artifact': 7, 'Origin': 8, 'Destination': 9, 'Giver': 10, 'Recipient': 11, 'Money': 12, 'Org': 13, 'Agent': 14, 'Victim': 15, 'Instrument': 16, 'Entity': 17, 'Attacker': 18, 'Target': 19, 'Defendant': 20, 'Adjudicator': 21, 'Prosecutor': 22, 'Plaintiff': 23, 'Crime': 24, 'Position': 25, 'Sentence': 26, 'Vehicle': 27, 'Time-Within': 28, 'Time-Starting': 29, 'Time-Ending': 30, 'Time-Before': 31, 'Time-After': 32, 'Time-Holds': 33, 'Time-At-Beginning': 34, 'Time-At-End': 35}
 
-corenlp_path = './stanford-corenlp-full-2018-10-05'
+corenlp_path = '../GAT/stanford-corenlp-full-2018-10-05'
 
 INF = 1e8
 

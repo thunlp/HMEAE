@@ -145,8 +145,14 @@ class DMCNN():
     def process_data_for_argument(self,dev_pred_event_types,test_pred_event_types):
         print('--Preprocess Data For Argument Stage--')
         train,dev,test = list(self.a_train),list(self.a_dev),list(self.a_test)
-        dev[1] = dev_pred_event_types
-        test[1] = test_pred_event_types
+
+        dev = list(dev)
+        dev.append(dev_pred_event_types)
+        dev = tuple(dev)
+
+        test = list(test)
+        test.append(test_pred_event_types)
+        test = tuple(test)
         
         dev_slices = []
         for idx,event_type in enumerate(list(dev_pred_event_types)):
@@ -353,17 +359,19 @@ class DMCNN():
 
                 pred_labels = []
                 for batch in get_batch(dev,constant.a_batch_size,False):
-                    pred_label = sess.run(self.pred_label,feed_dict=get_argument_feeddict(self,batch,False,"argument"))
-                    pred_labels.extend(list(pred_label))
-                golds = list(dev[2])
+                    golden_event_types,feed_dict = get_argument_feeddict(self,batch,False,"argument")
+                    pred_label = sess.run(self.pred_label,feed_dict=feed_dict)
+                    pred_labels.extend(list(zip(list(golden_event_types),list(pred_label))))
+                golds = list(zip(list(dev[1]),list(dev[2])))
                 dev_p,dev_r,dev_f = f_score(pred_labels,golds)
                 print("dev_Precision: {} dev_Recall:{} dev_F1:{}".format(str(dev_p),str(dev_r),str(dev_f)))
 
                 pred_labels = []
                 for batch in get_batch(test,constant.a_batch_size,False):
-                    pred_label = sess.run(self.pred_label,feed_dict=get_argument_feeddict(self,batch,is_train=False,stage="argument"))
-                    pred_labels.extend(list(pred_label))
-                golds = list(test[2])
+                    golden_event_types,feed_dict = get_argument_feeddict(self,batch,False,"argument")
+                    pred_label = sess.run(self.pred_label,feed_dict=feed_dict)
+                    pred_labels.extend(list(zip(list(golden_event_types),list(pred_label))))
+                golds = list(zip(list(test[1]),list(test[2])))
                 test_p, test_r, test_f = f_score(pred_labels, golds)
                 print("test_Precision: {} test_Recall:{} test_F1:{}\n".format(str(test_p), str(test_r), str(test_f)))
 
