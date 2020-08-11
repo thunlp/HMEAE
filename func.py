@@ -21,13 +21,15 @@ def f_score(predict,golden,classify='single',mode='f'):
         if predict[i]==golden[i] and not is_NA(predict[i]):
             TP+=1
         elif predict[i]!=golden[i]:
-            if is_NA(predict[i]):
+            if is_NA(predict[i]) and not is_NA(golden[i]):
                 FN+=1
-            elif is_NA(golden[i]):
+            elif is_NA(golden[i]) and not is_NA(predict[i]):
+                FP+=1
+            elif (not is_NA(golden[i])) and (not is_NA(predict[i])):
+                FN+=1
                 FP+=1
             else:
-                FN+=1
-                FP+=1
+                TN+=1
         else:
             TN+=1
     try:

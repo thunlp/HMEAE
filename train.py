@@ -6,7 +6,7 @@ import os
 flags = tf.flags
 flags.DEFINE_string("gpu", "1", "The GPU to run on")
 flags.DEFINE_string("mode", "HMEAE", "DMCNN or HMEAE")
-flags.DEFINE_string("classify", "single", "single or tuple")
+flags.DEFINE_string("classify", "tuple", "single or tuple")
 
 def main(_):
     config = flags.FLAGS

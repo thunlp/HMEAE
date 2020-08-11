@@ -392,21 +392,32 @@ class Extractor():
         self.process()
         print('--Preprocess Data Finish--')
 
-        nw = self.source_files['nw']
-        random.shuffle(nw)
-        random.shuffle(nw)
-        other_files = [file for dir in self.dirs for file in self.source_files[dir] if dir!='nw']+nw[40:]
-        random.shuffle(other_files)
-        random.shuffle(other_files)
+        # Random Split
+            # nw = self.source_files['nw']
+            # random.shuffle(nw)
+            # random.shuffle(nw)
+            # other_files = [file for dir in self.dirs for file in self.source_files[dir] if dir!='nw']+nw[40:]
+            # random.shuffle(other_files)
+            # random.shuffle(other_files)
 
-        test_files = nw[:40]
-        dev_files = other_files[:30]
-        train_files = other_files[30:]
+            # test_files = nw[:40]
+            # dev_files = other_files[:30]
+            # train_files = other_files[30:]
 
-        test_set = [instance for instance in self.Events if instance['file']+'.sgm' in test_files]+[instance for instance in self.None_events if instance['file']+".sgm" in test_files]
-        dev_set = [instance for instance in self.Events if instance['file']+'.sgm' in dev_files]+[instance for instance in self.None_events if instance['file']+".sgm" in dev_files]
-        train_set = [instance for instance in self.Events if instance['file']+'.sgm' in train_files]+[instance for instance in self.None_events if instance['file']+".sgm" in train_files]
+            # test_set = [instance for instance in self.Events if instance['file']+'.sgm' in test_files]+[instance for instance in self.None_events if instance['file']+".sgm" in test_files]
+            # dev_set = [instance for instance in self.Events if instance['file']+'.sgm' in dev_files]+[instance for instance in self.None_events if instance['file']+".sgm" in dev_files]
+            # train_set = [instance for instance in self.Events if instance['file']+'.sgm' in train_files]+[instance for instance in self.None_events if instance['file']+".sgm" in train_files]
 
+        # Use fix split
+        with open('./logs/split.json','r') as f:
+            splits = json.load(f)
+        test_files = splits['test']
+        dev_files = splits['dev']
+        train_files = splits['train']
+        test_set = [instance for instance in self.Events if instance['file'] in test_files]+[instance for instance in self.None_events if instance['file'] in test_files]
+        dev_set = [instance for instance in self.Events if instance['file'] in dev_files]+[instance for instance in self.None_events if instance['file'] in dev_files]
+        train_set = [instance for instance in self.Events if instance['file'] in train_files]+[instance for instance in self.None_events if instance['file'] in train_files]
+            
         with open(constant.ACE_DUMP+'/train.json','w') as f:
             json.dump(train_set,f)
         with open(constant.ACE_DUMP+'/dev.json','w') as f:
