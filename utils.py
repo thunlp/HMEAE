@@ -409,14 +409,22 @@ class Extractor():
             # train_set = [instance for instance in self.Events if instance['file']+'.sgm' in train_files]+[instance for instance in self.None_events if instance['file']+".sgm" in train_files]
 
         # Use fix split
-        with open('./logs/split.json','r') as f:
-            splits = json.load(f)
+        splits = {'train':[],'dev':[],'test':[]}
+
+        splits_name = ['train','dev','test']
+        for split in splits_name:
+            with open('{}.txt'.format(split),'r') as f:
+                split_file = f.readline().strip()
+                while split_file:
+                    splits[split].append(split_file)
+                    split_file = f.readline().strip()
+        
         test_files = splits['test']
         dev_files = splits['dev']
         train_files = splits['train']
-        test_set = [instance for instance in self.Events if instance['file'] in test_files]+[instance for instance in self.None_events if instance['file'] in test_files]
-        dev_set = [instance for instance in self.Events if instance['file'] in dev_files]+[instance for instance in self.None_events if instance['file'] in dev_files]
-        train_set = [instance for instance in self.Events if instance['file'] in train_files]+[instance for instance in self.None_events if instance['file'] in train_files]
+        test_set = [instance for instance in self.Events if instance['file'].replace('.','_').replace('-','_') in test_files]+[instance for instance in self.None_events if instance['file'].replace('.','_').replace('-','_') in test_files]
+        dev_set = [instance for instance in self.Events if instance['file'].replace('.','_').replace('-','_') in dev_files]+[instance for instance in self.None_events if instance['file'].replace('.','_').replace('-','_') in dev_files]
+        train_set = [instance for instance in self.Events if instance['file'].replace('.','_').replace('-','_') in train_files]+[instance for instance in self.None_events if instance['file'].replace('.','_').replace('-','_') in train_files]
             
         with open(constant.ACE_DUMP+'/train.json','w') as f:
             json.dump(train_set,f)
