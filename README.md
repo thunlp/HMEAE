@@ -13,7 +13,7 @@ tqdm
 # Usage
 To run this code, you need to:
 1. put ```English``` folder of ACE05 dataset into ```./```, or you can modify path in ```constant.py```. (You can get ACE2005 dataset here: https://catalog.ldc.upenn.edu/LDC2006T06)
-2. put stanford language model into ```./```, or you can modify path in ```constant.py```. (You can download here: https://stanfordnlp.github.io/CoreNLP/history.html)
+2. put stanford language model (```stanford-corenlp-full-2018-10-05```) into ```./```, or you can modify path in ```constant.py```. (You can download here: https://stanfordnlp.github.io/CoreNLP/history.html)
 3. put GloVe embedding file into ```./glove``` folder, or you can modify path in ```constant.py```. (You can download GloVe embedding here: https://nlp.stanford.edu/projects/glove/)
 4. Run ```python train.py --gpu 0 --mode HMEAE``` to run with HMEAE model.  Run ```python train.py --gpu 0 --mode DMCNN``` to run with DMCNN model.
 
